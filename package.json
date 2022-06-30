@@ -1,0 +1,11 @@
+{
+  "name": "algorhyme",
+  "version": "1.0.0",
+  "description": "library to create and use visualizations of algorithms",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yannik Wyss (endergnar)",
+  "license": "MIT"
+}
