@@ -2,8 +2,9 @@
   "name": "algorhyme",
   "version": "1.0.0",
   "description": "library to create and use visualizations of algorithms",
-  "main": "main.js",
+  "main": "./lib/main.js",
   "scripts": {
+    "build": "tsc && node lib/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yannik Wyss (endergnar)",
