@@ -26,6 +26,10 @@ export class CanvasContext extends DrawContext{
         baseline: "middle",
     };
 
+    clear(){
+        this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+
     rect(center: Pos, w: number, h: number, options?: DrawOptions): void {
         if(options) this.style(options);
 

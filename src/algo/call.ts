@@ -1,9 +1,9 @@
 import { Algo } from "../algo";
-import { BreakableEnv } from "../breakable";
+import { Env } from "../env";
 
 //Call examples
 class Call extends Algo<any[], void> {
-    env: BreakableEnv<any>;
+    env: Env<any>;
     name= "empty call";
     arguments= [];
     async body() {
@@ -17,12 +17,12 @@ class Call extends Algo<any[], void> {
 
     };
 
-    constructor(env: BreakableEnv<any>) {
+    constructor(env: Env<any>) {
         super(env);
         this.env = env;
     }
 }
 
 export const call = () => {
-    return (env: BreakableEnv<any>) => {return new Call(env);}
+    return (env: Env<any>) => {return new Call(env);}
 };

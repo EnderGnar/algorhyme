@@ -1,4 +1,4 @@
-import { BreakableEnv } from "../breakable"
+import { Env } from "../env"
 import { Algo } from "../algo"
 import { Drawable, DrawContext } from "../draw";
 
@@ -20,9 +20,9 @@ class Towers implements Drawable{
         const towers = [this.A, this.B, this.C];
         const sixth = 100/6;
 
-        const min_width = 10;
-        const width_increase = 5;
-        const height = 5;
+        const min_width = 5;
+        const width_increase = 2;
+        const height = 2;
 
 
         for(let i = 0; i < 3; i++) {
@@ -30,7 +30,7 @@ class Towers implements Drawable{
             
             //draw stick
             draw.rect(
-                {x: offset, y: 25}, 5, 50,
+                {x: offset, y: 25}, 3, 50,
                 {fill:"brown"}    
             );
 
@@ -39,7 +39,7 @@ class Towers implements Drawable{
                 const width = min_width + width_increase*(disk-1);
                 const color = `hsl(${disk*360 / 20}, 100%, 50%)`;
 
-                draw.rect({x: offset, y:(c+0.5)*height}, width, height,
+                draw.rect({x: offset, y:(c+0.5)*height+10}, width, height,
                     {fill: color}
                 );
 
@@ -52,16 +52,20 @@ class Towers implements Drawable{
             {fill:"#aaaaaa", stroke:"#aaaaaa"}
         ); 
     }
+
+    constructor(n: number) {
+        this.A = new Array(n).fill(0).map((_,i) => n-i)
+    }
 }
 
-class HanoiEnv extends BreakableEnv<Towers> implements Drawable{
+export class HanoiEnv extends Env<Towers> implements Drawable{
     draw(draw: DrawContext){
         this.data.draw(draw);
     }
-    data = new Towers();
+    data = new Towers(10);
 }
 
-type HanoiParameter = [number, TowerKey, TowerKey, TowerKey];
+export type HanoiParameter = [number, TowerKey, TowerKey, TowerKey];
 
 class HanoiAlgo extends Algo<HanoiParameter, void> {
     name = "Hanoi";
@@ -81,7 +85,6 @@ class HanoiAlgo extends Algo<HanoiParameter, void> {
     async move(from: TowerKey, to: TowerKey){
         await this.env.breakpoint();
         this.env.data.get(to).push(this.env.data.get(from).pop()!);
-        console.log(`move ${from} -> ${to}`);
     }
 
     constructor(env: HanoiEnv, ...args: HanoiParameter) {

@@ -20,6 +20,9 @@ export type Pos = {
  */
 
 export abstract class DrawContext {
+    //Clears the screen if needed.
+    abstract clear(): void;
+
     abstract rect(
         center: Pos, w:number, h:number, 
         options?: DrawOptions

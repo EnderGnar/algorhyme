@@ -1,9 +1,9 @@
-import { BreakableEnv } from "./breakable";
+import { Env } from "./env";
 import { call } from "./algo/call";
 
 
 
-class TestEnv extends BreakableEnv<any> {
+class TestEnv extends Env<any> {
     data = undefined;
 }
 
