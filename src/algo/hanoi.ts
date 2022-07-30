@@ -30,7 +30,7 @@ class Towers implements Drawable{
             
             //draw stick
             draw.rect(
-                {x: offset, y: 25}, 3, 50,
+                {x: offset, y: 25}, 2, 50,
                 {fill:"brown"}    
             );
 
@@ -39,7 +39,7 @@ class Towers implements Drawable{
                 const width = min_width + width_increase*(disk-1);
                 const color = `hsl(${disk*360 / 20}, 100%, 50%)`;
 
-                draw.rect({x: offset, y:(c+0.5)*height+10}, width, height,
+                draw.rect({x: offset, y:(c+0.5)*height+4}, width, height,
                     {fill: color}
                 );
 
@@ -48,7 +48,7 @@ class Towers implements Drawable{
         }
 
         //draw grass
-        draw.rect({x:50, y: 5}, 100, 10,
+        draw.rect({x:50, y: 2}, 100, 4,
             {fill:"#aaaaaa", stroke:"#aaaaaa"}
         ); 
     }
@@ -62,14 +62,13 @@ export class HanoiEnv extends Env<Towers> implements Drawable{
     draw(draw: DrawContext){
         this.data.draw(draw);
     }
-    data = new Towers(10);
+    data = new Towers(5);
 }
 
 export type HanoiParameter = [number, TowerKey, TowerKey, TowerKey];
 
-class HanoiAlgo extends Algo<HanoiParameter, void> {
+class HanoiAlgo extends Algo<HanoiParameter, void, Towers> {
     name = "Hanoi";
-    env: HanoiEnv;
 
     async body(height: number, from: TowerKey, to: TowerKey , spare: TowerKey){
         if (height <= 0)
@@ -86,13 +85,8 @@ class HanoiAlgo extends Algo<HanoiParameter, void> {
         await this.env.breakpoint();
         this.env.data.get(to).push(this.env.data.get(from).pop()!);
     }
-
-    constructor(env: HanoiEnv, ...args: HanoiParameter) {
-        super(env, ...args);
-        this.env = env;
-    }
 }
 
-export const hanoi = (...args: HanoiParameter) => (env: HanoiEnv) => {
+export const hanoi = (...args: HanoiParameter) => (env: Env<Towers>) => {
     return new HanoiAlgo(env, ...args);
 }

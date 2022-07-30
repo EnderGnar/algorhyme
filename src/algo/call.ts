@@ -2,8 +2,7 @@ import { Algo } from "../algo";
 import { Env } from "../env";
 
 //Call examples
-class Call extends Algo<any[], void> {
-    env: Env<any>;
+class Call extends Algo<any[], void, any> {
     name= "empty call";
     arguments= [];
     async body() {
@@ -16,11 +15,6 @@ class Call extends Algo<any[], void> {
         }
 
     };
-
-    constructor(env: Env<any>) {
-        super(env);
-        this.env = env;
-    }
 }
 
 export const call = () => {
