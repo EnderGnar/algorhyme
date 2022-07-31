@@ -10,9 +10,9 @@ export interface Data {
 export abstract class Env<D extends Data>{
     abstract data: D;
     stack: Runnable<any, D>[] = []
-    queue: ((env: Env<D>) => Runnable<any, D>)[] = [];
+    queue: Runnable<any, D>[] = [];
 
-    async run<G>(algo: (env: Env<D>) => Runnable<G, D>): Promise<G>{
+    async run<G>(algo: (env: this) => Runnable<G, D>): Promise<G>{
         const algorithm = algo(this)
         this.stack.push(algorithm)
 
@@ -24,12 +24,21 @@ export abstract class Env<D extends Data>{
         }
         finally {
             this.stack.pop()
-            console.log("inner pop")
         }
     }
 
-    enqueue<G>(algo: (env: Env<D>) => Runnable<G, D>): void {
-        this.queue.push(algo);
+    /**
+     * Do not use this. Internal service
+     */
+    run_from_queue(){
+        const next = this.queue.splice(0,1)[0];
+        next.run().catch(e => {
+            console.error(e);
+        })
+    }
+
+    enqueue<G>(algo: (env: this) => Runnable<G, D>): void {
+        this.queue.push(algo(this));
     }
 
     wait_executor?: PromiseExecutor;
@@ -45,9 +54,10 @@ export abstract class Env<D extends Data>{
                 this.skip_count -= 1
                 resolve();
             }
-
-            if(this.wait_executor !== undefined) throw "Dev error! already waiting somewhere else on a breakpoint"
-            this.wait_executor = [resolve, reject]
+            else {
+                if(this.wait_executor !== undefined) throw "Dev error! already waiting somewhere else on a breakpoint"
+                this.wait_executor = [resolve, reject]
+            }
         })
     };
 
@@ -55,10 +65,7 @@ export abstract class Env<D extends Data>{
         if(this.wait_executor == undefined) {
             //if current algo has finished and another is in queue, start executing that algo.
             if(this.stack.length == 0 && this.queue.length > 0) {
-                const next = this.queue.splice(0,1)[0];
-                this.run(next)
-
-                return true
+                this.run_from_queue()
             }
             return false
         };
@@ -134,4 +141,3 @@ export abstract class Env<D extends Data>{
         this.data.reset()
     }
 }
-

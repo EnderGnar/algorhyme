@@ -70,6 +70,9 @@ export class CanvasContext extends DrawContext{
         this.setFont();
 
         if(options){
+            this.ctx.textAlign = this.default.align
+            this.ctx.textBaseline = this.default.baseline
+
             if(options.fill) this.ctx.fillText(text, ...this.p(middle));
             if(options.stroke) this.ctx.strokeText(text, ...this.p(middle));
         }
