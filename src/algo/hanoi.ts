@@ -1,10 +1,12 @@
-import { Env } from "../env"
+import { Data, Env } from "../env"
 import { Algo } from "../algo"
 import { Drawable, DrawContext } from "../draw";
 
 type TowerKey = "A" | "B" | "C";
 
-class Towers implements Drawable{
+class Towers implements Drawable, Data{
+    n: number;
+
     A:number[] = [];
     B:number[] = [];
     C:number[] = [];
@@ -53,8 +55,16 @@ class Towers implements Drawable{
         ); 
     }
 
+
+    reset() {
+        this.A = new Array(this.n).fill(0).map((_,i) => this.n-i)
+        this.B = []
+        this.C = []
+    }
+
     constructor(n: number) {
-        this.A = new Array(n).fill(0).map((_,i) => n-i)
+        this.n = n;
+        this.reset();
     }
 }
 

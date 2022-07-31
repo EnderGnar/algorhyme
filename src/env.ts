@@ -1,7 +1,13 @@
 import { Runnable } from "./algo";
 
 
-export abstract class Env<D>{
+type PromiseExecutor = [() => void, (reason?: any) => void]
+
+export interface Data {
+    reset: () => void
+}
+
+export abstract class Env<D extends Data>{
     abstract data: D;
     stack: Runnable<any, D>[] = []
     queue: ((env: Env<D>) => Runnable<any, D>)[] = [];
@@ -9,16 +15,24 @@ export abstract class Env<D>{
     async run<G>(algo: (env: Env<D>) => Runnable<G, D>): Promise<G>{
         const algorithm = algo(this)
         this.stack.push(algorithm)
-        const res = await algorithm.run();
-        this.stack.pop()
-        return res
+
+        try {
+            const res = await algorithm.run();
+            return res
+        } catch(e) {
+            throw e
+        }
+        finally {
+            this.stack.pop()
+            console.log("inner pop")
+        }
     }
 
     enqueue<G>(algo: (env: Env<D>) => Runnable<G, D>): void {
         this.queue.push(algo);
     }
 
-    wait_stack: (() => void)[] = [];
+    wait_executor?: PromiseExecutor;
     interval = -1;
 
     speed = 0;
@@ -26,17 +40,19 @@ export abstract class Env<D>{
     skip_count = 0;
 
     breakpoint(){ 
-        return new Promise<void>(resolve => {
+        return new Promise<void>((resolve, reject) => {
             if(this.skip_count > 0){
                 this.skip_count -= 1
                 resolve();
             }
-            this.wait_stack.push(resolve);
+
+            if(this.wait_executor !== undefined) throw "Dev error! already waiting somewhere else on a breakpoint"
+            this.wait_executor = [resolve, reject]
         })
     };
 
     step(){
-        if(this.wait_stack.length == 0) {
+        if(this.wait_executor == undefined) {
             //if current algo has finished and another is in queue, start executing that algo.
             if(this.stack.length == 0 && this.queue.length > 0) {
                 const next = this.queue.splice(0,1)[0];
@@ -47,7 +63,8 @@ export abstract class Env<D>{
             return false
         };
 
-        let res = this.wait_stack.pop()!;
+        let res = this.wait_executor[0];
+        this.wait_executor = undefined;
         res();
         return true
     }
@@ -101,8 +118,20 @@ export abstract class Env<D>{
     loop(){
         let amount = this.speed_list[this.speed][1];
         if(this.step()) amount -= 1;
-        console.log(this.skip_count);
         this.skip_count = amount;
+    }
+
+    //cancels current algorithm without reseting the data
+    cancel(){
+        if(this.wait_executor) {
+            this.wait_executor[1]()
+            this.wait_executor = undefined
+        }
+    }
+
+    reset(){
+        this.cancel()
+        this.data.reset()
     }
 }
 

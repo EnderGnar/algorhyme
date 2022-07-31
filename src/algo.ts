@@ -1,11 +1,11 @@
-import { Env } from "./env";
+import { Data, Env } from "./env";
 
 export interface Runnable<G, D> {
     run:() => Promise<G>;
 }
 
 
-export abstract class Algo<T extends Array<any>, G, D> implements Runnable<G, D>{
+export abstract class Algo<T extends Array<any>, G, D extends Data> implements Runnable<G, D>{
     abstract name: string;
     arguments: T;
 
