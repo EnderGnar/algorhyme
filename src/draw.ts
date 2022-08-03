@@ -11,6 +11,14 @@ export interface Drawable {
     draw: (draw: DrawContext) => void
 }
 
+export interface DrawWithInfo<I> {
+    draw_info: (draw: DrawContext, info: I) => void
+}
+
+export interface Informing<I> {
+    create_info: () => I
+}
+
 export type Pos = {
     x: number, y: number,
 }

@@ -32,8 +32,12 @@ export abstract class Env<D extends Data>{
      */
     run_from_queue(){
         const next = this.queue.splice(0,1)[0];
+        this.stack.push(next);
         next.run().catch(e => {
             console.error(e);
+        })
+        .finally(() => {
+            this.stack.pop();
         })
     }
 
