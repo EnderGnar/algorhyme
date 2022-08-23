@@ -7,10 +7,18 @@ export type Bar = {
     value: number;
 }
 
-export type BarInfo = ({
-    index: number,
-    color: string
-})[]
+export type BarInfo = {
+    range: [number, number],
+    highlight: {
+        index: number,
+        color: string
+    }[]
+}
+
+export const emptyBarInfo = (arr: Bars) => ({
+    range:[0, arr.length],
+    highlight:[]
+} as BarInfo)
 
 export class Bars extends Array<Bar> implements Data, Drawable, DrawWithInfo<BarInfo>{
     count: number;
@@ -21,21 +29,23 @@ export class Bars extends Array<Bar> implements Data, Drawable, DrawWithInfo<Bar
     };
 
     draw(draw: DrawContext){
-        this.draw_info(draw, [])
+        this.draw_info(draw, emptyBarInfo(this))
     };
 
     draw_info(draw: DrawContext, info: BarInfo){
         const width = 90 / this.length;
         const height = 50 / this.length;
 
+        const [min, max] = info.range
+
         for(let i = 0; i < this.length; i++){
             const value = this[i].value
-            const color = `hsl(${value*340 / this.length}, 100%, 69%)`
+            const color = `hsla(${value*340 / this.length}, 100%, 69%, ${(min <= i && i < max)?1:0.2})`
             
             draw.rect({x: 5 + width * (i+1/2), y: 1 + height*((value+1)/2)}, width*0.8, height*value, {fill: color})
         }
 
-        for(let {index, color} of info) {
+        for(let {index, color} of info.highlight) {
             const value = this[index].value
             draw.rect({x: 5 + width * (index+1/2), y: 1 + height*((value+1)/2)}, width*0.8, height*value, {stroke: color, width: 0.5})
         }

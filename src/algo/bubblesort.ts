@@ -32,11 +32,14 @@ class BubbleSort extends Algo<[], void, Bars> implements Informing<BarInfo> {
 
     create_info(): BarInfo{
         const j_c = (this.env.data[this.j].value < this.env.data[this.j-1].value) ? "gray" : "green"
-        return [
-            {index: this.i, color: "red"},
-            {index: this.j-1, color: j_c},
-            {index: this.j, color: j_c},
-        ]
+        return {
+            range: [0, this.env.data.length],
+            highlight: [
+                {index: this.i, color: "red"},
+                {index: this.j-1, color: j_c},
+                {index: this.j, color: j_c},
+            ]
+        };
     };
 
     constructor(env: SortEnv){

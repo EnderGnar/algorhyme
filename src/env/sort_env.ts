@@ -1,4 +1,4 @@
-import { BarInfo, Bars } from "../data/bars";
+import { BarInfo, Bars, emptyBarInfo } from "../data/bars";
 import { Drawable, DrawContext, DrawWithInfo, Informing } from "../draw";
 import { RandomEnv } from "../random";
 
@@ -6,7 +6,7 @@ export class SortEnv extends RandomEnv<Bars> implements Drawable{
     data: Bars;
     
     draw(draw: DrawContext){
-        let info: BarInfo = []
+        let info: BarInfo = emptyBarInfo(this.data);
 
         const current = this.stack[this.stack.length - 1] as any
 
