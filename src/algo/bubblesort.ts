@@ -1,5 +1,5 @@
 import { Algo } from "../algo";
-import { BarInfo, Bars } from "../data/bars";
+import { BarInfo, Bars, swap } from "../data/bars";
 import { Informing } from "../draw";
 import { SortEnv } from "../env/sort_env";
 
@@ -24,9 +24,7 @@ class BubbleSort extends Algo<[], void, Bars> implements Informing<BarInfo> {
     }
 
     async swap(arr: Bars, i: number, j: number){
-        const temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+        swap(arr, i, j);
         await this.env.breakpoint()
     }
 

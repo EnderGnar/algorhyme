@@ -71,9 +71,7 @@ class Shuffle extends Algo<[], void, Bars> {
             let first = Math.floor(this.env.random() * l);
             let second = Math.floor(this.env.random() * l);
 
-            const temp = this.env.data[first];
-            this.env.data[first] = this.env.data[second];
-            this.env.data[second] = temp;
+            swap(this.env.data, first, second);
 
             //await this.env.breakpoint()
         }
@@ -86,3 +84,9 @@ class Shuffle extends Algo<[], void, Bars> {
 }
 
 export const shuffle = () => (env: SortEnv) => new Shuffle(env);
+
+export const swap = (bars: Bars, A: number, B: number) => {
+    const temp = bars[A];
+    bars[A] = bars[B];
+    bars[B] = temp;
+}

@@ -1,5 +1,5 @@
 import { Algo } from "../algo";
-import { BarInfo, Bars } from "../data/bars";
+import { BarInfo, Bars, swap } from "../data/bars";
 import { Informing } from "../draw";
 import { SortEnv } from "../env/sort_env";
 
@@ -26,9 +26,7 @@ class SelectionSort extends Algo<[], void, Bars> implements Informing<BarInfo> {
             }
 
             if(this.min != this.next){
-                const temp = arr[this.min];
-                arr[this.min] = arr[this.next];
-                arr[this.next] = temp;
+                swap(arr, this.min, this.next);
                 await this.env.breakpoint();
             }
         }
