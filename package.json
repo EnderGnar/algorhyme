@@ -1,6 +1,6 @@
 {
   "name": "algorhyme",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "library to create and use visualizations of algorithms",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

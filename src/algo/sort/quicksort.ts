@@ -1,7 +1,7 @@
-import { Algo } from "../algo";
-import { BarInfo, Bars, swap } from "../data/bars";
-import { Informing } from "../draw";
-import { SortEnv } from "../env/sort_env";
+import { Algo } from "../../algo";
+import { BarInfo, Bars, swap } from "../../data/bars";
+import { Informing } from "../../draw";
+import { SortEnv } from "../../env/sort_env";
 
 export type QuickParameter = [number, number];
 
