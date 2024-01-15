@@ -1,5 +1,5 @@
 import { Data, Env } from "../env"
-import { Algo } from "../algo"
+import { Algo } from "../algorithm"
 import { Drawable, DrawContext } from "../draw";
 
 type TowerKey = "A" | "B" | "C";

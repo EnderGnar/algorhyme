@@ -1,4 +1,4 @@
-import { Algo } from "../algo";
+import { Algo } from "../algorithm";
 import { Drawable, DrawContext } from "../draw";
 import { Data, Env } from "../env";
 import { RandomEnv } from "../random";

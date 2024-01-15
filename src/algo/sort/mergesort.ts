@@ -1,4 +1,4 @@
-import { Algo } from "../../algo";
+import { Algo } from "../../algorithm";
 import { BarListInfo, BarList, emptyBarInfo, Bars, swap } from "../../data/bars";
 import { Informing } from "../../draw";
 import { MergeSortEnv } from "../../env/sort_env";

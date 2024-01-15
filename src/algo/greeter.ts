@@ -1,4 +1,4 @@
-import { Algo } from "../algo";
+import { Algo } from "../algorithm";
 import { Env } from "../env";
 
 //Greeter

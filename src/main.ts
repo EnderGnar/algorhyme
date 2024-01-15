@@ -1,18 +1,8 @@
-import { Env } from "./env";
-import { call } from "./algo/call";
+import { helloWorldCommand } from "./builtin/hello/hello";
+import { Machine } from "./machine";
 
+let m = new Machine();
 
+m.command_queue.push(helloWorldCommand("Yannik"));
 
-class TestEnv extends Env<any> {
-    data = undefined;
-}
-
-let env = new TestEnv();
-
-env.run(call());
-
-function loop() {
-    env.step();
-}
-
-setInterval(loop, 100);
+setInterval(() => m.step(), 1000);
