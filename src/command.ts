@@ -7,3 +7,12 @@ export type Command<A extends Args> = {
     cleanup: (machine: Machine) => void,
     result?: number | void,
 }
+
+export function defaultCommandBuilder<A extends Args>(algo: Algorithm<A, any>): ((...a: A) => Command<A>) {
+    return (...a: A) => ({
+        init: (machine: Machine) => {
+            return [algo, a]
+        },
+        cleanup: ()=>{}
+    });
+}
