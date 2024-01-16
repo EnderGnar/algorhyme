@@ -1,9 +1,7 @@
-import { Algorithm, Args } from "./algorithm";
+import { Algorithm, Args, LocalInit } from "./algorithm";
 import { Command } from "./command";
 
 type HeapObject = any
-
-type LocalInit<T> = () => T;
 
 type StackFrame<T> = {
     locals: T
