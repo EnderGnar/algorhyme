@@ -1,5 +1,5 @@
 import { Algorithm, LocalInit } from "../../algorithm";
-import { Command, defaultCommandBuilder } from "../../command";
+import { defaultCommandBuilder } from "../../command";
 import { Machine } from "../../machine";
 import { helloWorldAlgo } from "../hello/hello";
 

@@ -1,4 +1,5 @@
 import { Algorithm, Args } from "./algorithm";
+import { HeapObject } from "./heap-object";
 import { Machine } from "./machine";
 
 export type Command<A extends Args> = {
@@ -15,4 +16,15 @@ export function defaultCommandBuilder<A extends Args>(algo: Algorithm<A, any>): 
         },
         cleanup: ()=>{}
     });
+}
+
+export function heapCommandBuilder(algo: Algorithm<[HeapObject], any>): ((a: number) => Command<[HeapObject]>) {
+    return (a: number) => ({
+        init: (machine: Machine) => {
+            let obj = machine.heap.get(a);
+            if(obj == undefined) throw "No object found!";
+            return [algo, [obj]]
+        },
+        cleanup: ()=>{}
+    })
 }

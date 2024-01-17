@@ -1,7 +1,6 @@
 import { Algorithm, Args, LocalInit } from "./algorithm";
 import { Command } from "./command";
-
-type HeapObject = any
+import { HeapObject } from "./heap-object";
 
 type StackFrame<A extends Args, T> = {
     algo: Algorithm<A, T>,
@@ -66,7 +65,7 @@ export class Machine {
         this.active_command = this.command_queue.splice(0, 1)[0];
 
         let [algo, args] = this.active_command.init(this);
-        this.call(algo, args)
+        this.call(algo, ...args)
         .then(res => this.active_command!.result = res)
         .finally(
             () => {

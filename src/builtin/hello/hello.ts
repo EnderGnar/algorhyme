@@ -1,5 +1,5 @@
 import { Algorithm, LocalInit } from "../../algorithm";
-import { Command, defaultCommandBuilder } from "../../command";
+import { defaultCommandBuilder } from "../../command";
 import { Machine } from "../../machine";
 
 // The arguments for the algorithm. We declare them in such a way because they must be initialized by the Command.
