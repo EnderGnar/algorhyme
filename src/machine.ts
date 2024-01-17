@@ -3,8 +3,10 @@ import { Command } from "./command";
 
 type HeapObject = any
 
-type StackFrame<T> = {
-    locals: T
+type StackFrame<A extends Args, T> = {
+    algo: Algorithm<A, T>,
+    locals: T,
+    args: A,
 }
 
 type Resolve = (value: void | PromiseLike<void>) => void;
@@ -15,7 +17,7 @@ export class Machine {
     command_queue: Command<any>[];
     active_command?: Command<any>;
 
-    stack: StackFrame<any>[];
+    stack: StackFrame<any, any>[];
 
     // Shares objects between multiple commands.
     heap: Map<number, HeapObject>;
@@ -47,10 +49,14 @@ export class Machine {
     async call<A extends Args, T>(algo: Algorithm<A, T>, ...args: A) {
         let locals = Machine.get_locals(algo);
         this.stack.push({
-            locals: locals
+            algo,
+            locals,
+            args
         })
 
-        return await algo(locals, this, ...args);
+        let res = await algo(locals, this, ...args);
+        this.stack.pop();
+        return res
     }
 
     dispatch() {
