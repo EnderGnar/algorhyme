@@ -1,5 +1,5 @@
-import { Algorithm, LocalInit, register_void_locals } from "../../algorithm";
-import { Command, defaultCommandBuilder, heapCommandBuilder } from "../../command";
+import { Algorithm, register_void_locals } from "../../algorithm";
+import { Command } from "../../command";
 import { Machine } from "../../machine";
 import { TowerKey, Towers } from "./towers";
 
