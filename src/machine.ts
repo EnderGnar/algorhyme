@@ -117,5 +117,9 @@ export class Machine {
 
     log(...args: any[]) {
         console.log(...args);
-    } 
+    }
+
+    random() {
+        return Math.random();
+    }
 }
