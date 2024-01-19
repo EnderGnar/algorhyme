@@ -18,12 +18,12 @@ export function defaultCommandBuilder<A extends Args>(algo: Algorithm<A, any>): 
     });
 }
 
-export function heapCommandBuilder(algo: Algorithm<[HeapObject], any>): ((a: number) => Command<[HeapObject]>) {
+export function heapCommandBuilder<T>(algo: Algorithm<[T], any>): ((a: number) => Command<[T]>) {
     return (a: number) => ({
         init: (machine: Machine) => {
             let obj = machine.heap.get(a);
             if(obj == undefined) throw "No object found!";
-            return [algo, [obj]]
+            return [algo, [obj as T]]
         },
         cleanup: ()=>{}
     })

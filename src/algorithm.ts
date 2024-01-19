@@ -7,3 +7,10 @@ export type Algorithm<A extends Args, T> = (locals: T, machine: Machine, ...args
 export function register_void_locals<T>(algo: Algorithm<any, T>) {
     Machine.initializers.set(algo, () => {});
 }
+
+export function register_default_locals<T>(algo: Algorithm<any, T>, proto: T) {
+    Machine.initializers.set(
+        algo,
+        () => ({...proto})
+    );
+}
